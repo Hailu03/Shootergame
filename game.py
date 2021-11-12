@@ -781,8 +781,10 @@ while run:
                 player.update_action(1)#1: run
             else:
                 player.update_action(0)#0: idle
+		
             screen_scroll, level_complete = player.move(moving_left, moving_right)
             bg_scroll -= screen_scroll
+		
             #check if player has completed the level
             if level_complete:
                 start_intro = True
@@ -791,28 +793,14 @@ while run:
                 world_data = reset_level()
                 if level <= MAX_LEVELS:
                     #load in level data and create world
-                    with open(f'level3_data.csv', newline='') as csvfile:
+                    with open(f'level{level}_data.csv', newline='') as csvfile:
                         reader = csv.reader(csvfile, delimiter=',')
                         for x, row in enumerate(reader):
                             for y, tile in enumerate(row):
                                 world_data[x][y] = int(tile)
                     world = World()
-                    player, health_bar = world.process_data(world_data) 
+                    player, health_bar = world.process_data(world_data)
 
-            if level_complete:
-                start_intro = True
-                level += 1
-                bg_scroll = 1
-                world_data = reset_level()
-                if level <= MAX_LEVELS:
-                    #load in level data and create world
-                    with open(f'level2_data.csv', newline='') as csvfile:
-                        reader = csv.reader(csvfile, delimiter=',')
-                        for x, row in enumerate(reader):
-                            for y, tile in enumerate(row):
-                                world_data[x][y] = int(tile)
-                    world = World()
-                    player, health_bar = world.process_data(world_data) 
         else:
             screen_scroll = 0
             if death_fade.fade():
